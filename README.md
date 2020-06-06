@@ -149,7 +149,7 @@ model.add(Dense(1))
 
 ### 10. Creation of the Training Set & Training Process
 
-At each timestamp, total 3 images will be collected using three camera (towards front left, towards front center, towards front right). By using data augumentation, we can transfer the side view images into center view and add them to dataset. Also, by flipping the image, we can also augumente the dataset by twice (not forget also flipp the measurement value).
+At each timestamp, total 3 images will be collected using three camera (towards front left, towards front center, towards front right). By using data augumentation, we can transfer the side view images into center view and add them to dataset. Also, by flipping the image, we can also augumente the dataset by twice (not forget also flipp the measurement value). The code block is as following:
 
 ```
 for line in batch_samples:
