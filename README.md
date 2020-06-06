@@ -130,9 +130,45 @@ Only the provided data is used for training and validation.
 4. Dropout layer: prevent overfitting
 5. Dense layer: fully connected
 
+The following is the end model structure:
+
+```
+model.add(Convolution2D(32, 5, activation='relu'))
+model.add(MaxPool2D(3, 3))
+model.add(Convolution2D(64, 5, activation='relu'))
+model.add(MaxPool2D(3, 3))
+model.add(Convolution2D(128, 5, activation='relu'))
+model.add(MaxPool2D(3, 3))
+model.add(Dropout(0.5))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(1))
+```
+
 ### 10. Creation of the Training Set & Training Process
 
-By using sklearn pacakge, the input images are successfully seperated into 80/20 training and validation data in the generator.
+At each timestamp, total 3 images will be collected using three camera (towards front left, towards front center, towards front right). By using data augumentation, we can transfer the side view images into center view and add them to dataset. Also, by flipping the image, we can also augumente the dataset by twice (not forget also flipp the measurement value).
 
+```
+for line in batch_samples:
+    current_steerings = [float(line[3]), float(line[3]) + correction, float(line[3]) - correction]
+    for i in range(3):
+        name = '/opt/carnd_p3/data/IMG/' + line[i].split('/')[-1]
+        img = ndimage.imread(name)
+        images.append(img)
+        measurements.append(current_steerings[i])
+        image_flipped = np.fliplr(img)
+        images.append(image_flipped)
+        measurements.append(-current_steerings[i])
+ ```          
+ 
+By using sklearn pacakge, the input images are successfully seperated into 80/20 training and validation data in the generator. The code block is as following:
+
+```
+model.add(Lambda(lambda x: x / 255 - 0.5, input_shape = (160, 320, 3)))
+model.add(Cropping2D(cropping=((50, 20), (0, 0))))
+```
 
 
