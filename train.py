@@ -12,6 +12,7 @@ from sklearn.utils import shuffle
 from keras.models import Model
 from keras.callbacks import ModelCheckpoint
 
+# creat a generator for fit_generator
 
 def generator(samples, b_size=128):
     correction = 0.25
@@ -27,6 +28,7 @@ def generator(samples, b_size=128):
                 # print(line[3])
                 if line[3] == 0:
                     counter += 1
+                    # ignore some portion of images which has 0 steering angle
                     if counter % 5 == 0:
                         continue
                 current_steerings = [float(line[3]), float(line[3]) + correction, float(line[3]) - correction]
@@ -43,6 +45,7 @@ def generator(samples, b_size=128):
 
             X_train = np.array(images)
             Y_train = np.array(measurements)
+            # every time the generator is called, a batch_size of data will be drawn
             yield shuffle(X_train, Y_train)
 
 
@@ -54,13 +57,16 @@ with open('/opt/carnd_p3/data/driving_log.csv') as csvfile:
             continue
         lines.append(line)
 
+# use sklearn to spilit data into training and validation set
 train_samples, validation_samples = train_test_split(lines, test_size=0.2)
 
 batch_size = 32
 
+# Generator initialization
 train_generator = generator(train_samples, batch_size)
 validation_generator = generator(validation_samples, batch_size)
 
+# 
 checkpoint = ModelCheckpoint('/home/workspace/CarND-Behavioral-Cloning-P3/model.h5', monitor='val_loss', mode = 'min', save_best_only=True)
 
 # inception = InceptionResNetV2(include_top=False, weights = "imagenet")
