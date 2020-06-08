@@ -1,7 +1,8 @@
 # Behavioral Cloning Project
-
+<p align="center">
+  <img width="700" height="500" src="./examples/0.png">
+</p>
 ## Overview
----
 This repository contains files for the Behavioral Cloning Project.
 
 In this project, a deep neural network is applied to clone driving behavior. The model is trained, validated and tested using Keras. The model will output steering angle to an autonomous vehicle regarding current input camera image.
