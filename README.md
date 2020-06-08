@@ -1,7 +1,9 @@
 # Behavioral Cloning Project
+
 <p align="center">
   <img width="700" height="500" src="./examples/0.png">
 </p>
+
 ## Overview
 This repository contains files for the Behavioral Cloning Project.
 
