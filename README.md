@@ -75,10 +75,6 @@ At each timestamp, a image will be collected using front camera.
 
 By using data augumentation and also avoid biased data, we can flipp the image to enrich dataset by twice (flipp the measurement value). 
 
-The flipped image:
-<p align="center">
-  <img width="342" height="177" src="./examples/2.png">
-</p>
 
 ```
 for line in batch_samples:
@@ -91,7 +87,12 @@ for line in batch_samples:
         image_flipped = np.fliplr(img)
         images.append(image_flipped)
         measurements.append(-current_steerings[i])
- ```          
+ ```   
+ 
+The flipped image:
+<p align="center">
+  <img width="342" height="177" src="./examples/2.png">
+</p>       
  
 A lambda layer is a convenient way to parallelize image normalization. The lambda layer will also ensure that the model will normalize input images when making predictions.:
 
@@ -101,14 +102,14 @@ model.add(Lambda(lambda x: x / 255 - 0.5, input_shape = (160, 320, 3)))
 
 The Cropping2D layer might be useful for choosing an area of interest that excludes the sky and/or the hood of the car.
 
+```
+model.add(Cropping2D(cropping=((50, 20), (0, 0))))
+```
+
 The cropped image:
 <p align="center">
   <img width="336" height="108" src="./examples/3.png">
 </p>
-
-```
-model.add(Cropping2D(cropping=((50, 20), (0, 0))))
-```
 
 ### 3. Neural Network
 
@@ -167,6 +168,9 @@ plt.xlabel('epoch')
 plt.legend(['training set', 'validation set'], loc='upper right')
 plt.show()
 ```
+
+An example of history plot:
+
 <p align="center">
   <img width="400" height="300" src="./examples/4.png">
 </p>
